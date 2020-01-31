@@ -4,7 +4,7 @@ import os
 import xml.etree.ElementTree as xmltree
 import timeit
 from logger import Logger
-
+import numpy as np
 # create a function that looks up current directory
 
 class Program:
@@ -106,7 +106,6 @@ class Program:
 
                 parts = line.split(sep=',')
                 nums = np.arrange(2,9)
-                print(nums)
                 for i in nums:
                     entry = {
                         "name": parts[0].strip(),
