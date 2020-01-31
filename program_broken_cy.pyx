@@ -2,6 +2,7 @@
 import json
 import os
 import xml.etree.ElementTree as xmltree
+import timeit
 from logger import Logger
 
 # create a function that looks up current directory
@@ -10,8 +11,6 @@ class Program:
     def __init__(self):
         this_folder = os.path.dirname(__file__)
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        print('folder data type ',type(this_folder))
-        print('directory data type', type(dir_path))
         print(dir_path)
 
         # delete parent directories to make it faster
@@ -25,7 +24,7 @@ class Program:
             self.log_startup()
             # self.load_xml()
             self.load_json()
-            self.load_csv()
+            # self.load_csv()
         except Exception as e:
             print(e.__repr__())
 
@@ -40,8 +39,7 @@ class Program:
         self.logger.log("Loading XML file: {0}".format(filename))
         dom = xmltree.ElementTree()
         dom.parse(filename)
-
-        print()
+        
         print("Titles of recent posts:")
         items = list(dom.findall("channel/item"))
         self.logger.log("Found {0} titles in RSS feed.".format(len(items)))
@@ -55,6 +53,8 @@ class Program:
         filename = os.path.join(self.data_folder, "python-course.json")
         self.logger.log("Loading JSON file: {0}".format(filename))
 
+
+
         with open(filename, "r") as fin:
             data = json.loads(fin.read())
             print("Course title: {0}".format(data["Name"]))
@@ -63,8 +63,10 @@ class Program:
             print("Number of engagements: {0}".format(len(engagements)))
             print("Locations:")
             for e in engagements:
+                print(type(e))
                 print("\t" + e["City"] + " on " + e["StartDate"] + " [active? " + str(e["ActiveEngagement"]) + "]")
         print()
+
 
     def load_csv(self):
         filename = os.path.join(self.data_folder, "fx-seven-day.csv")
@@ -99,19 +101,16 @@ class Program:
                     continue
 
                 parts = line.split(sep=',')
-                entry = {
-                    "name": parts[0].strip(),
-                    "key": parts[1].strip(),
-                    "values": [
-                        float(parts[2]),
-                        float(parts[3]),
-                        float(parts[4]),
-                        float(parts[5]),
-                        float(parts[6]),
-                        float(parts[7]),
-                        float(parts[8]),
-                    ]
-                }
+                
+                
+                for i in range(2,9):
+                    entry = {
+                        "name": parts[0].strip(),
+                        "key": parts[1].strip(),
+                        "values": [
+                            float(parts[i])
+                        ]
+                    }
 
                 lookup[entry["key"]] = entry
         return lookup
