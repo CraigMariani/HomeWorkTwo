@@ -67,8 +67,13 @@ class Program:
             engagements = data["Engagements"]
             print("Number of engagements: {0}".format(len(engagements)))
             print("Locations:")
-            for e in engagements:
-                print("\t" + e["City"] + " on " + e["StartDate"] + " [active? " + str(e["ActiveEngagement"]) + "]")
+            with open('data/json_output.txt', 'w') as output_file:
+                    json.dump(data, output_file)
+            # for e in engagements:
+                # print("\t" + e["City"] + " on " + e["StartDate"] + " [active? " + str(e["ActiveEngagement"]) + "]")
+
+
+
         print()
 
 
